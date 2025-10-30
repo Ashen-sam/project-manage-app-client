@@ -1,6 +1,7 @@
 // TaskTable.tsx
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import {
@@ -23,10 +24,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Calendar } from '@/components/ui/calendar';
-import { Check, MessageCircle, Plus, Trash2, X, Calendar as CalendarIcon } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
+import { Calendar as CalendarIcon, Check, Plus, Trash2, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { Task, TaskPriority, TaskStatus, TaskTableProps } from './taskTypes';
 
 export const TaskTable: React.FC<TaskTableProps> = ({
@@ -113,25 +113,9 @@ export const TaskTable: React.FC<TaskTableProps> = ({
         setIsAddingTask(false);
     };
 
-    const getStatusConfig = (status: TaskStatus) => {
-        const configs = {
-            'Todo': { label: 'Todo', className: 'bg-gray-400 hover:bg-gray-500 text-white' },
-            'In Progress': { label: 'Working on it', className: 'bg-orange-400 hover:bg-orange-500 text-white' },
-            'Done': { label: 'Done', className: 'bg-emerald-500 hover:bg-emerald-600 text-white' },
-        };
-        return configs[status];
-    };
-
-    const getPriorityColor = (priority: TaskPriority) => {
-        switch (priority) {
-            case 'High': return 'text-red-600 font-semibold';
-            case 'Medium': return 'text-orange-600 font-semibold';
-            case 'Low': return 'text-green-600 font-semibold';
-        }
-    };
 
 
-    const renderEditableCell = (task: Task, field: keyof Task, width?: string) => {
+    const renderEditableCell = (task: Task, field: keyof Task) => {
         const isEditing = editingCell?.taskId === task.id && editingCell?.field === field;
         const value = task[field] as string;
 
@@ -159,9 +143,9 @@ export const TaskTable: React.FC<TaskTableProps> = ({
     };
 
     return (
-        <div className="w-full border rounded-sm overflow-hidden bg-white ">
+        <div className="w-full border rounded-sm overflow-hidden  ">
             <Table className="">
-                <TableHeader >
+                <TableHeader className='border-l-7 border-l-purple-400' >
                     <TableRow className="bg-gray-50 hover:bg-gray-50 border-b-2">
                         <TableHead className="w-12">
                             <Checkbox
@@ -179,9 +163,8 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                         </TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody >
+                <TableBody className='border-l-7 border-l-purple-600' >
                     {tasks.map((task) => {
-                        const statusConfig = getStatusConfig(task.status);
 
                         return (
                             <TableRow key={task.id} className="hover:bg-gray-50 border-b">

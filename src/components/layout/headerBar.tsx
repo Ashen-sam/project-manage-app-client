@@ -96,6 +96,7 @@ export const HeaderBar = ({ className, title }: HeaderBarProps) => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
+
         </header>
     );
 };

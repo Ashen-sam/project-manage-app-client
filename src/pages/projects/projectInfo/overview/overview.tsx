@@ -11,7 +11,7 @@ export const Overview = () => {
         name: "E-Commerce Platform Redesign",
         description: "Provides a clear overview of a project's purpose, scope, objectives, and key details. It serves as a guide for all stakeholders involved, ensuring alignment and clarity throughout the project lifecycle.",
         status: "On track!",
-        summary: "This project focuses on delivering a streamlined and efficient solution to meet business needs.\n\nCarefully planned to achieve success. 🚀",
+        summary: "This project focuses on delivering a streamlined and efficient solution to meet business needs.\n\nCarefully planned to achieve success.",
         owner: {
             name: "Savannah Dune",
             avatar: "",
@@ -54,9 +54,9 @@ export const Overview = () => {
     return (
         <div className="space-y-6">
             {/* Quick Actions */}
-            <div className="grid gap-4 md:grid-cols-5">
+            <div className="grid gap-4 md:grid-cols-3">
                 <Button variant="outline" className="h-auto py-4 flex-col items-start gap-2 hover:bg-accent rounded-sm">
-                    <div className="flex items-center gap-2 text-primary">
+                    <div className="flex items-center gap-2 ">
                         <Plus className="h-5 w-5" />
                         <span className="font-semibold">Create Task</span>
                     </div>
@@ -64,7 +64,7 @@ export const Overview = () => {
                 </Button>
 
                 <Button variant="outline" className="h-auto py-4 flex-col items-start gap-2 hover:bg-accent">
-                    <div className="flex items-center gap-2 text-primary">
+                    <div className="flex items-center gap-2     ">
                         <Users className="h-5 w-5" />
                         <span className="font-semibold">Invite Team</span>
                     </div>
@@ -72,7 +72,7 @@ export const Overview = () => {
                 </Button>
 
                 <Button variant="outline" className="h-auto py-4 flex-col items-start gap-2 hover:bg-accent">
-                    <div className="flex items-center gap-2 text-primary">
+                    <div className="flex items-center gap-2     ">
                         <Upload className="h-5 w-5" />
                         <span className="font-semibold">Upload a File</span>
                     </div>

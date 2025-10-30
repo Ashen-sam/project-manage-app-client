@@ -85,9 +85,9 @@ export function CommonTable<T extends Record<string, unknown>>({
                 />
             )}
 
-            <div className="w-full overflow-hidden bg-white border border-gray-200 rounded-md">
+            <div className="w-full overflow-hidden  border  rounded-md">
                 <Table className="  w-full  ">
-                    <TableHeader className="bg-slate-50 text-slate-500 text-xs border-l-7 border-l-purple-400">
+                    <TableHeader className=" text-slate-500 text-xs ">
                         <TableRow className="" >
                             {selectable && (
                                 <TableCell className="w-12 ">
@@ -108,7 +108,7 @@ export function CommonTable<T extends Record<string, unknown>>({
                             />
                         </TableRow>
                     </TableHeader>
-                    <TableBody className="text-xs border-l-7 border-l-purple-600">
+                    <TableBody className="text-xs ">
                         {sortedData.length === 0 ? (
                             <TableRow>
                                 <TableCell

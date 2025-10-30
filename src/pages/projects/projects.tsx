@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { CommonTable, ProjectStatusCommon, type ProjectStatus } from "@/components";
+import { CommonTable, ProjectPriorityCommon, ProjectStatusCommon, type ProjectPriority, type ProjectStatus } from "@/components";
+import { CommonDialog } from "@/components/common/commonDialog";
+import { CommonDialogFooter } from "@/components/common/commonDialogFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,16 +11,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { FolderKanban, Edit, Trash2 } from "lucide-react";
-import { CommonDialog } from "@/components/common/commonDialog";
-import { CommonDialogFooter } from "@/components/common/commonDialogFooter";
+import { Edit, FolderKanban, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 interface Project {
     id: number;
     name: string;
     status: ProjectStatus;
-    priority: string;
+    priority: ProjectPriority;
     progress: number;
     dueDate: string;
     members: number;
@@ -95,7 +95,7 @@ export const Projects = () => {
             id: 8,
             name: "Customer Support Portal",
             status: "Canceled",
-            priority: "High",
+            priority: "Critical",
             progress: 55,
             dueDate: "2025-12-05",
             members: 5,
@@ -139,6 +139,8 @@ export const Projects = () => {
         const newProject: Project = {
             id: Math.max(...projects.map((p) => p.id), 0) + 1,
             ...formData,
+            status: formData.status as ProjectStatus,
+            priority: formData.priority as ProjectPriority,
         };
         setProjects([...projects, newProject]);
         setIsAddDialogOpen(false);
@@ -167,7 +169,14 @@ export const Projects = () => {
         if (selectedProject) {
             setProjects(
                 projects.map((p) =>
-                    p.id === selectedProject.id ? { ...selectedProject, ...formData } : p
+                    p.id === selectedProject.id
+                        ? {
+                            ...selectedProject,
+                            ...formData,
+                            status: formData.status as ProjectStatus,
+                            priority: formData.priority as ProjectPriority,
+                        }
+                        : p
                 )
             );
             setIsEditDialogOpen(false);
@@ -314,8 +323,7 @@ export const Projects = () => {
                     </div>
                 </div>
             ) : (
-                <div className=" space-y-4 p-2 ">
-
+                <div className=" space-y-4  ">
                     <CommonTable
                         selectable
                         rowKey="id"
@@ -333,12 +341,12 @@ export const Projects = () => {
                             {
                                 key: "status",
                                 header: "Status",
-                                accessor: (row) => <ProjectStatusCommon status={row.status} />,
+                                accessor: (row) => <ProjectStatusCommon showIcon={false} status={row.status} />,
                             },
                             {
                                 key: "priority",
                                 header: "Priority",
-                                accessor: (row) => row.priority,
+                                accessor: (row) => <ProjectPriorityCommon showIcon={false} priority={row.priority} />,
                             },
                             {
                                 key: "progress",

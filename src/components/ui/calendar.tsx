@@ -231,9 +231,9 @@ export const Calendar = () => {
             </div>
 
 
-            <Button size={'sm'} className="h-9 bg-purple-700 hover:bg-purple-800">
-              <Plus className="h-4 w-4 mr-2" />
-              Add event
+            <Button size={'sm'} className="h-9 text-sm" >
+              <Plus className="h-4 w-4" />
+              Event
             </Button>
           </div>
         </div>

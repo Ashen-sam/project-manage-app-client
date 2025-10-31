@@ -1,6 +1,7 @@
 import { GlobalLayout } from "@/components";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarNew, Home, Overview, ProjectInfo, Projects, Settings, Task } from "@/pages";
+import { AuthLayout, Login, Register } from "@/pages/auth";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -23,5 +24,18 @@ export const router = createBrowserRouter([
                 ]
             },
         ],
+
     },
+    {
+
+        element: <AuthLayout />,
+        children: [
+            {
+                path: "/login", element: <Login />
+            },
+            {
+                path: "/register", element: <Register />
+            }
+        ],
+    }
 ]);

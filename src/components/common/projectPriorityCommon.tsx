@@ -1,68 +1,58 @@
-import { cn } from "@/lib/utils";
-import {
-    AlertCircle,
-    AlertTriangle,
-    ArrowUp,
-    Minus
-} from "lucide-react";
+import React from 'react';
+import { ArrowDown, Minus, ArrowUp, AlertTriangle } from 'lucide-react';
 
-export type ProjectPriority = "Low" | "Medium" | "High" | "Critical";
+export type PriorityType = 'Low' | 'Medium' | 'High' | 'Critical';
 
-interface ProjectPriorityCommonProps {
-    priority: ProjectPriority;
+export interface PriorityBadgeProps {
+    priority: PriorityType;
     className?: string;
-    showIcon?: boolean;
 }
 
-export const ProjectPriorityCommon = ({
-    priority,
-    className,
-    showIcon = true
-}: ProjectPriorityCommonProps) => {
+export const ProjectPriorityCommon: React.FC<PriorityBadgeProps> = ({ priority, className = '' }) => {
+    const priorityConfig = {
+        'Low': {
+            bgColor: 'bg-gray-100',
+            textColor: 'text-gray-700',
+            icon: ArrowDown,
+            iconColor: 'text-gray-600',
+            borderColor: 'border border-gray-200'
+        },
+        'Medium': {
+            bgColor: 'bg-blue-100',
+            textColor: 'text-blue-700',
+            icon: Minus,
+            iconColor: 'text-blue-600',
+            borderColor: 'border border-blue-200'
 
-    const getPriorityConfig = (priority: ProjectPriority) => {
-        const configs = {
-            "Low": {
-                variant: "secondary" as const,
-                className: "bg-green-400 text-green-700  border-green-200",
-                icon: Minus
-            },
-            "Medium": {
-                variant: "secondary" as const,
-                className: "bg-yellow-400 text-yellow-700  border-yellow-200",
-                icon: AlertCircle
-            },
-            "High": {
-                variant: "secondary" as const,
-                className: "bg-red-400 text-red-700  border-red-200",
-                icon: ArrowUp
-            },
-            "Critical": {
-                variant: "secondary" as const,
-                className: "bg-rose-900 text-rose-900  border-rose-900",
-                icon: AlertTriangle
-            }
-        };
 
-        return configs[priority];
+        },
+        'High': {
+            bgColor: 'bg-orange-100',
+            textColor: 'text-orange-700',
+            icon: ArrowUp,
+            iconColor: 'text-orange-600',
+            borderColor: 'border border-orange-200'
+
+        },
+        'Critical': {
+            bgColor: 'bg-red-100',
+            textColor: 'text-red-700',
+            icon: AlertTriangle,
+            iconColor: 'text-red-600',
+            borderColor: 'border border-red-200'
+
+        }
     };
 
-    const config = getPriorityConfig(priority);
+    const config = priorityConfig[priority];
     const Icon = config.icon;
 
     return (
-        <div className="flex ">
-            <div className={` p-[2.5px] rounded-sm ${config.className} mr-2`}></div>
-            <div
-                className={cn(
-                    " gap-1.5  rounded-sm min-w-20 text-xs bg-white",
-                    className
-                )}
-            >
-                {showIcon && <Icon className="h-3.5 w-3.5" />}
-                <div className={`text-${config.className} font-semibold`}> {priority}</div>
-
-            </div>
-        </div>
+        <span
+            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] font-medium min-w-20 ${config.bgColor} ${config.borderColor} ${config.textColor} ${className}`}
+        >
+            <Icon className={`w-3 h-3 ${config.iconColor}`} />
+            {priority}
+        </span>
     );
 };

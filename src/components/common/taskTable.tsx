@@ -145,7 +145,7 @@ export const TaskTable: React.FC<TaskTableProps> = ({
     return (
         <div className="w-full border rounded-sm overflow-hidden  ">
             <Table className="">
-                <TableHeader className='border-l-7 border-l-purple-400' >
+                <TableHeader className='' >
                     <TableRow className="bg-gray-50 hover:bg-gray-50 border-b-2">
                         <TableHead className="w-12">
                             <Checkbox
@@ -163,7 +163,7 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                         </TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody className='border-l-7 border-l-purple-600' >
+                <TableBody className='' >
                     {tasks.map((task) => {
 
                         return (

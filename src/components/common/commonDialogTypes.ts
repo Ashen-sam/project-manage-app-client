@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 export interface CommonDialogProps {
@@ -10,6 +11,7 @@ export interface CommonDialogProps {
   size?: "sm" | "md" | "lg" | "xl" | "full";
   showCloseButton?: boolean;
   className?: string;
+  icon?: LucideIcon;
 }
 
 export interface DialogFooterProps {

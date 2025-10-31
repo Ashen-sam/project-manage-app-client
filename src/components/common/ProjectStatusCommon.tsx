@@ -1,73 +1,90 @@
-import { cn } from "@/lib/utils";
-import {
-    CheckCircle2,
-    Clock,
-    Loader2,
-    PauseCircle,
-    XCircle
-} from "lucide-react";
+import React from 'react';
+import { Clock, AlertTriangle, CheckCircle, Search, CheckCircle2, XCircle, Clock4 } from 'lucide-react';
 
-export type ProjectStatus = "Planning" | "In Progress" | "Completed" | "On Hold" | "Canceled";
+export type StatusType =
+    | 'In progress'
+    | 'Pending'
+    | 'Submitted'
+    | 'In review'
+    | 'Success'
+    | 'Failed'
+    | 'Expired';
 
-interface ProjectStatusCommonProps {
-    status: ProjectStatus;
+interface StatusBadgeProps {
+    status: StatusType;
     className?: string;
-    showIcon?: boolean;
 }
 
-export const ProjectStatusCommon = ({
-    status,
-    className,
-    showIcon = true
-}: ProjectStatusCommonProps) => {
+export const ProjectStatusCommon: React.FC<StatusBadgeProps> = ({ status, className = '' }) => {
+    const statusConfig = {
+        'In progress': {
+            bgColor: 'bg-blue-100',
+            textColor: 'text-blue-700',
+            icon: Clock,
+            iconColor: 'text-blue-600',
+            borderColor: 'border border-blue-200'
+        },
+        'Pending': {
+            bgColor: 'bg-orange-100',
+            textColor: 'text-orange-700',
+            icon: AlertTriangle,
+            iconColor: 'text-orange-600',
+            borderColor: 'border border-orange-200'
 
-    const getStatusConfig = (status: ProjectStatus) => {
-        const configs = {
-            "Planning": {
-                variant: "secondary" as const,
-                className: "bg-purple-400 text-purple-700  border-purple-200",
-                icon: Clock
-            },
-            "In Progress": {
-                variant: "secondary" as const,
-                className: "bg-blue-400 text-blue-700  border-blue-200",
-                icon: Loader2
-            },
-            "Completed": {
-                variant: "secondary" as const,
-                className: "bg-green-400 text-green-700  border-green-200",
-                icon: CheckCircle2
-            },
-            "On Hold": {
-                variant: "secondary" as const,
-                className: "bg-yellow-400 text-yellow-700  border-yellow-200",
-                icon: PauseCircle
-            },
-            "Canceled": {
-                variant: "secondary" as const,
-                className: "bg-red-400 text-red-700  border-red-200",
-                icon: XCircle
-            }
-        };
+        },
+        'Submitted': {
+            bgColor: 'bg-purple-100',
+            textColor: 'text-purple-700',
+            icon: CheckCircle,
+            iconColor: 'text-purple-600',
+            borderColor: 'border border-purple-200'
 
-        return configs[status];
+        },
+        'In review': {
+            bgColor: 'bg-yellow-100',
+            textColor: 'text-yellow-700',
+            icon: Search,
+            iconColor: 'text-yellow-600',
+            borderColor: 'border border-yellow-200'
+
+        },
+        'Success': {
+            bgColor: 'bg-green-100',
+            textColor: 'text-green-700',
+            icon: CheckCircle2,
+            iconColor: 'text-green-600',
+            borderColor: 'border border-green-200'
+
+        },
+        'Failed': {
+            bgColor: 'bg-red-100',
+            textColor: 'text-red-700',
+            icon: XCircle,
+            iconColor: 'text-red-600',
+            borderColor: 'border border-red-200'
+
+        },
+        'Expired': {
+            bgColor: 'bg-gray-100',
+            textColor: 'text-gray-700',
+            icon: Clock4,
+            iconColor: 'text-gray-600',
+            borderColor: 'border border-gray-200'
+
+        }
     };
 
-    const config = getStatusConfig(status);
+    const config = statusConfig[status];
     const Icon = config.icon;
 
     return (
-        <div className="flex ">
-            <div className={` p-[2.5px] rounded-sm ${config.className} mr-2`}></div>
-            <div
-                className={cn(
-                    " gap-1.5  rounded-sm min-w-20 text-xs bg-white",
-                    className
-                )}
-            >
-                {showIcon && <Icon className="h-3.5 w-3.5" />}
-                <div className={`text-${config.className} font-semibold`}> {status}</div>
-            </div>
-        </div>
+        <span
+            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] font-medium min-w-22 ${config.bgColor} ${config.borderColor} ${config.textColor} ${className}`}
+        >
+            <Icon className={`w-3 h-3 text-xs ${config.iconColor}`} />
+            {status}
+        </span>
     );
 };
+
+// Demo Componen

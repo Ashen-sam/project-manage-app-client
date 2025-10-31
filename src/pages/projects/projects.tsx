@@ -1,4 +1,4 @@
-import { CommonTable, ProjectPriorityCommon, ProjectStatusCommon, type ProjectPriority, type ProjectStatus } from "@/components";
+import { CommonTable, ProjectPriorityCommon, ProjectStatusCommon, type PriorityType, type StatusType, } from "@/components";
 import { CommonDialog } from "@/components/common/commonDialog";
 import { CommonDialogFooter } from "@/components/common/commonDialogFooter";
 import { Button } from "@/components/ui/button";
@@ -11,15 +11,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Edit, FolderKanban, Trash2 } from "lucide-react";
+import { Edit, PackagePlus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 interface Project {
     id: number;
     name: string;
-    status: ProjectStatus;
-    priority: ProjectPriority;
+    status: StatusType;
+    priority: PriorityType;
     progress: number;
     dueDate: string;
     members: number;
@@ -31,7 +31,7 @@ export const Projects = () => {
         {
             id: 1,
             name: "Website Redesign",
-            status: "In Progress",
+            status: 'In progress',
             priority: "High",
             progress: 65,
             dueDate: "2025-11-15",
@@ -40,7 +40,7 @@ export const Projects = () => {
         {
             id: 2,
             name: "Mobile App Development",
-            status: "Planning",
+            status: 'In review',
             priority: "Medium",
             progress: 20,
             dueDate: "2025-12-30",
@@ -49,7 +49,7 @@ export const Projects = () => {
         {
             id: 3,
             name: "API Documentation Setup",
-            status: "Completed",
+            status: 'Pending',
             priority: "High",
             progress: 85,
             dueDate: "2025-11-25",
@@ -58,8 +58,8 @@ export const Projects = () => {
         {
             id: 4,
             name: "UI Component Library",
-            status: "In Progress",
-            priority: "High",
+            status: 'Submitted',
+            priority: 'Low',
             progress: 50,
             dueDate: "2025-12-10",
             members: 6,
@@ -67,39 +67,13 @@ export const Projects = () => {
         {
             id: 5,
             name: "Marketing Campaign Launch",
-            status: "Planning",
-            priority: "Medium",
+            status: 'Success',
+            priority: 'Critical',
             progress: 10,
             dueDate: "2026-01-15",
             members: 4,
         },
-        {
-            id: 6,
-            name: "Database Optimization",
-            status: "In Progress",
-            priority: "High",
-            progress: 70,
-            dueDate: "2025-11-20",
-            members: 3,
-        },
-        {
-            id: 7,
-            name: "Internal Dashboard",
-            status: "Completed",
-            priority: "Low",
-            progress: 100,
-            dueDate: "2025-09-30",
-            members: 2,
-        },
-        {
-            id: 8,
-            name: "Customer Support Portal",
-            status: "Canceled",
-            priority: "Critical",
-            progress: 55,
-            dueDate: "2025-12-05",
-            members: 5,
-        },
+
 
 
     ]);
@@ -139,8 +113,8 @@ export const Projects = () => {
         const newProject: Project = {
             id: Math.max(...projects.map((p) => p.id), 0) + 1,
             ...formData,
-            status: formData.status as ProjectStatus,
-            priority: formData.priority as ProjectPriority,
+            status: formData.status as StatusType,
+            priority: formData.priority as PriorityType,
         };
         setProjects([...projects, newProject]);
         setIsAddDialogOpen(false);
@@ -173,8 +147,8 @@ export const Projects = () => {
                         ? {
                             ...selectedProject,
                             ...formData,
-                            status: formData.status as ProjectStatus,
-                            priority: formData.priority as ProjectPriority,
+                            status: formData.status as StatusType,
+                            priority: formData.priority as PriorityType,
                         }
                         : p
                 )
@@ -216,10 +190,11 @@ export const Projects = () => {
                 <div className="space-y-2">
                     <Label htmlFor="status">Status</Label>
                     <Select
+
                         value={formData.status}
                         onValueChange={(value) => setFormData({ ...formData, status: value })}
                     >
-                        <SelectTrigger>
+                        <SelectTrigger className="w-full">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -236,7 +211,7 @@ export const Projects = () => {
                         value={formData.priority}
                         onValueChange={(value) => setFormData({ ...formData, priority: value })}
                     >
-                        <SelectTrigger>
+                        <SelectTrigger className="w-full">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -293,11 +268,11 @@ export const Projects = () => {
 
     return (
         <>
-            {projects.length === 0 ? (
+            {projects.length == 0 ? (
                 <div className="flex items-center justify-center min-h-[700px] bg-background">
                     <div className="flex flex-col items-center max-w-md text-center space-y-4 px-6">
-                        <div className="mb-2">
-                            <FolderKanban className="h-20 w-20 text-muted-foreground stroke-[1.5]" />
+                        <div className="flex items-center justify-center p-3 rounded-lg bg-primary/10">
+                            <PackagePlus className="h-10 w-10 text-primary" />
                         </div>
 
                         <h2 className="text-2xl font-semibold tracking-tight">Projects</h2>
@@ -310,7 +285,7 @@ export const Projects = () => {
 
                         <div className="flex gap-3 pt-2">
                             <Button
-                                className="gap-2 bg-purple-800 hover:bg-purple-700 text-white"
+                                className="gap-2  text-white"
                                 size="sm"
                                 onClick={() => setIsAddDialogOpen(true)}
                             >
@@ -324,6 +299,22 @@ export const Projects = () => {
                 </div>
             ) : (
                 <div className=" space-y-4  ">
+
+                    <div className="w-full flex items-center justify-between  ">
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
+                                <PackagePlus className="h-5 w-5 text-primary" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-semibold tracking-tight">Projects</h1>
+                                <p className="text-sm text-muted-foreground">Manage and organize your projects</p>
+                            </div>
+                        </div>
+                        <Button size="sm" className="gap-2  ">
+                            <PackagePlus className="h-4 w-4" />
+                            Project
+                        </Button>
+                    </div>
                     <CommonTable
                         selectable
                         rowKey="id"
@@ -341,12 +332,12 @@ export const Projects = () => {
                             {
                                 key: "status",
                                 header: "Status",
-                                accessor: (row) => <ProjectStatusCommon showIcon={false} status={row.status} />,
+                                accessor: (row) => <ProjectStatusCommon status={row.status} />,
                             },
                             {
                                 key: "priority",
                                 header: "Priority",
-                                accessor: (row) => <ProjectPriorityCommon showIcon={false} priority={row.priority} />,
+                                accessor: (row) => <ProjectPriorityCommon priority={row.priority} />,
                             },
                             {
                                 key: "progress",
@@ -379,6 +370,7 @@ export const Projects = () => {
             )}
 
             <CommonDialog
+                icon={PackagePlus}
                 open={isAddDialogOpen}
                 onOpenChange={setIsAddDialogOpen}
                 title="Create New Project"
@@ -401,9 +393,10 @@ export const Projects = () => {
 
             {/* Edit Project Dialog */}
             <CommonDialog
+                icon={PackagePlus}
                 open={isEditDialogOpen}
                 onOpenChange={setIsEditDialogOpen}
-                title="Edit Project"
+                title="Update Project"
                 description="Update the project details"
                 size="lg"
                 footer={
@@ -415,7 +408,7 @@ export const Projects = () => {
                         }}
                         onConfirm={handleUpdateProject}
                         cancelText="Cancel"
-                        confirmText="Save Changes"
+                        confirmText="Save"
                     />
                 }
             >
@@ -424,6 +417,7 @@ export const Projects = () => {
 
             {/* Delete Confirmation Dialog */}
             <CommonDialog
+                icon={Trash2}
                 open={isDeleteDialogOpen}
                 onOpenChange={setIsDeleteDialogOpen}
                 title="Delete Project"

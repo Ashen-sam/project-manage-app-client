@@ -185,7 +185,7 @@ export const Calendar = () => {
                     {/* Left side - Date info */}
                     <div className="flex items-center gap-6 mb-2">
                         <div className="flex flex-col items-center justify-center bg-white border rounded-sm px-3 py-2">
-                            <span className="text-xl font-bold text-purple-700">10</span>
+                            <span className="text-xl font-bold text-primary">10</span>
                         </div>
 
                         <div>
@@ -231,7 +231,7 @@ export const Calendar = () => {
                         </div>
 
 
-                        <Button size={'sm'} className="h-9 bg-purple-700 hover:bg-purple-800">
+                        <Button size={'sm'} className="h-9 ">
                             <Plus className="h-4 w-4 mr-2" />
                             Add event
                         </Button>

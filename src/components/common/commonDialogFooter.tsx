@@ -16,6 +16,7 @@ export function CommonDialogFooter({
         <div className="flex justify-end gap-3">
             {showCancel && (
                 <Button
+                    className="text-xs"
                     variant="outline"
                     onClick={onCancel}
                     disabled={isLoading}
@@ -25,6 +26,7 @@ export function CommonDialogFooter({
             )}
             {showConfirm && (
                 <Button
+                    className="text-xs"
                     variant={confirmVariant}
                     onClick={onConfirm}
                     disabled={isLoading}

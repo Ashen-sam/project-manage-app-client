@@ -1,8 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
 :root.theme-purple,
 .light.theme-purple {
   --primary: oklch(0.65 0.25 295);
@@ -21,6 +32,27 @@
 
 .dark.theme-blue {
   --primary: oklch(0.68 0.2 250);
+  --primary-foreground: oklch(1 0 0);
+}
+:root.theme-orange,
+.light.theme-orange {
+  --primary: oklch(0.75 0.25 60);
+  --primary-foreground: oklch(1 0 0);
+}
+
+.dark.theme-orange {
+  --primary: oklch(0.82 0.25 60);
+  --primary-foreground: oklch(1 0 0);
+}
+
+:root.theme-green,
+.light.theme-green {
+  --primary: oklch(0.7 0.25 145);
+  --primary-foreground: oklch(1 0 0);
+}
+
+.dark.theme-green {
+  --primary: oklch(0.78 0.25 145);
   --primary-foreground: oklch(1 0 0);
 }
 

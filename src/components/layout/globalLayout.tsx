@@ -168,8 +168,8 @@ export const GlobalLayout = () => {
                         </div>
                     </div>
 
-                    <main className="flex-1 overflow-auto">
-                        <div className="p-4">
+                    <main className="flex-1 overflow-auto ">
+                        <div className="py-4 px-6 dark:bg-[#111111]">
                             <Outlet />
                         </div>
                     </main>

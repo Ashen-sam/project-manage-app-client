@@ -1,4 +1,6 @@
 import { CommonTable, ProjectPriorityCommon, ProjectStatusCommon, type PriorityType, type StatusType, } from "@/components";
+import { AvatarGroup } from "@/components/common/avatarCommon";
+import { CircularProgress } from "@/components/common/cicularProgress";
 import { CommonDialog } from "@/components/common/commonDialog";
 import { CommonDialogFooter } from "@/components/common/commonDialogFooter";
 import { Button } from "@/components/ui/button";
@@ -15,15 +17,20 @@ import { Edit, PackagePlus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-interface Project {
+interface Member {
+    id: number;
+    name: string;
+    image?: string;
+}
+
+interface Project extends Record<string, unknown> {
     id: number;
     name: string;
     status: StatusType;
     priority: PriorityType;
     progress: number;
     dueDate: string;
-    members: number;
-    [key: string]: string | number;
+    members: Member[];
 }
 
 export const Projects = () => {
@@ -31,51 +38,131 @@ export const Projects = () => {
         {
             id: 1,
             name: "Website Redesign",
-            status: 'In progress',
+            status: "In progress",
             priority: "High",
             progress: 65,
             dueDate: "2025-11-15",
-            members: 5,
+            members: [
+                { id: 1, name: "John Doe", image: "public/WhatsApp Image 2025-11-01 at 09.00.26_486015ae.jpg" },
+                { id: 2, name: "Jane Smith", image: "public/WhatsApp Image 2025-11-01 at 09.00.06_3f2744f6.jpg" },
+                { id: 3, name: "Mark Taylor", image: "public/WhatsApp Image 2025-11-01 at 08.59.01_457f64bf.jpg" },
+            ],
         },
         {
             id: 2,
             name: "Mobile App Development",
-            status: 'In review',
+            status: "In review",
             priority: "Medium",
             progress: 20,
             dueDate: "2025-12-30",
-            members: 8,
+            members: [
+                { id: 1, name: "Emily Carter", image: "public/WhatsApp Image 2025-11-01 at 09.00.47_4ae373f6.jpg" },
+                { id: 2, name: "Daniel Lee", image: "public/WhatsApp Image 2025-11-01 at 09.01.01_91a45634.jpg" },
+                { id: 3, name: "Sophia Patel", image: "public/WhatsApp Image 2025-11-01 at 09.01.25_35918156.jpg" },
+            ],
         },
         {
             id: 3,
             name: "API Documentation Setup",
-            status: 'Pending',
+            status: "Pending",
             priority: "High",
             progress: 85,
             dueDate: "2025-11-25",
-            members: 3,
+            members: [
+                { id: 1, name: "Michael Brown", image: "public/WhatsApp Image 2025-11-01 at 09.02.05_46b7e5dc.jpg" },
+                { id: 2, name: "Olivia Wilson", image: "public/WhatsApp Image 2025-11-01 at 09.02.17_ce61baf0.jpg" },
+                { id: 3, name: "Ethan Davis", image: "public/WhatsApp Image 2025-11-01 at 09.02.50_9470257f.jpg" },
+                { id: 4, name: "Ava Martinez", image: "public/WhatsApp Image 2025-11-01 at 09.03.26_a38ca278.jpg" },
+            ],
         },
         {
             id: 4,
             name: "UI Component Library",
-            status: 'Submitted',
-            priority: 'Low',
+            status: "Submitted",
+            priority: "Low",
             progress: 50,
             dueDate: "2025-12-10",
-            members: 6,
+            members: [
+                { id: 1, name: "Lucas Nguyen", image: "public/WhatsApp Image 2025-11-01 at 09.04.04_eada67d7.jpg" },
+                { id: 2, name: "Sophia White", image: "public/WhatsApp Image 2025-11-01 at 09.04.20_0d674ca2.jpg" },
+            ],
         },
         {
             id: 5,
             name: "Marketing Campaign Launch",
-            status: 'Success',
-            priority: 'Critical',
+            status: "Success",
+            priority: "Critical",
             progress: 10,
             dueDate: "2026-01-15",
-            members: 4,
+            members: [
+                { id: 1, name: "Isabella Green", image: "public/WhatsApp Image 2025-11-01 at 09.08.01_5e9bb2fd.jpg" },
+                { id: 2, name: "James Hall", image: "public/WhatsApp Image 2025-11-01 at 09.08.34_21d4eb3f.jpg" },
+            ],
         },
-
-
-
+        {
+            id: 6,
+            name: "Internal Dashboard Revamp",
+            status: "In progress",
+            priority: "Medium",
+            progress: 45,
+            dueDate: "2025-12-20",
+            members: [
+                { id: 1, name: "Noah Adams", image: "public/WhatsApp Image 2025-11-01 at 09.09.24_e5fdd616.jpg" },
+                { id: 2, name: "Grace Miller", image: "public/WhatsApp Image 2025-11-01 at 09.09.41_97579695.jpg" },
+                { id: 3, name: "Henry Clark", image: "public/WhatsApp Image 2025-11-01 at 09.10.42_df685104.jpg" },
+            ],
+        },
+        {
+            id: 7,
+            name: "Customer Feedback System",
+            status: "Pending",
+            priority: "High",
+            progress: 5,
+            dueDate: "2026-02-10",
+            members: [
+                { id: 1, name: "Liam Scott", image: "public/WhatsApp Image 2025-11-01 at 09.10.54_14f7cdcc.jpg" },
+                { id: 2, name: "Ella Roberts", image: "public/WhatsApp Image 2025-11-01 at 09.11.19_2688ec0c.jpg" },
+            ],
+        },
+        {
+            id: 8,
+            name: "E-commerce Platform Upgrade",
+            status: "In review",
+            priority: "Critical",
+            progress: 75,
+            dueDate: "2025-11-28",
+            members: [
+                { id: 1, name: "Noah Adams", image: "public/WhatsApp Image 2025-11-01 at 09.09.24_e5fdd616.jpg" },
+                { id: 2, name: "Grace Miller", image: "public/WhatsApp Image 2025-11-01 at 09.09.41_97579695.jpg" },
+                { id: 3, name: "Henry Clark", image: "public/WhatsApp Image 2025-11-01 at 09.10.42_df685104.jpg" },
+            ],
+        },
+        {
+            id: 9,
+            name: "AI Chatbot Integration",
+            status: "In progress",
+            priority: "High",
+            progress: 40,
+            dueDate: "2026-03-05",
+            members: [
+                { id: 1, name: "Isabella Green", image: "public/WhatsApp Image 2025-11-01 at 09.08.01_5e9bb2fd.jpg" },
+                { id: 2, name: "James Hall", image: "public/WhatsApp Image 2025-11-01 at 09.08.34_21d4eb3f.jpg" },
+            ],
+        },
+        {
+            id: 10,
+            name: "Cloud Migration Project",
+            status: "Pending",
+            priority: "Critical",
+            progress: 15,
+            dueDate: "2026-04-12",
+            members: [
+                { id: 1, name: "Michael Brown", image: "public/WhatsApp Image 2025-11-01 at 09.02.05_46b7e5dc.jpg" },
+                { id: 2, name: "Olivia Wilson", image: "public/WhatsApp Image 2025-11-01 at 09.02.17_ce61baf0.jpg" },
+                { id: 3, name: "Ethan Davis", image: "public/WhatsApp Image 2025-11-01 at 09.02.50_9470257f.jpg" },
+                { id: 4, name: "Ava Martinez", image: "public/WhatsApp Image 2025-11-01 at 09.03.26_a38ca278.jpg" },
+            ],
+        },
     ]);
 
     // Dialog states
@@ -89,22 +176,22 @@ export const Projects = () => {
     // Form state
     const [formData, setFormData] = useState({
         name: "",
-        status: "Planning",
-        priority: "Medium",
+        status: "Planning" as StatusType,
+        priority: "Medium" as PriorityType,
         progress: 0,
         dueDate: "",
-        members: 1,
+        members: [] as Member[],
     });
 
     // Reset form
     const resetForm = () => {
         setFormData({
             name: "",
-            status: "Planning",
-            priority: "Medium",
+            status: "Planning" as StatusType,
+            priority: "Medium" as PriorityType,
             progress: 0,
             dueDate: "",
-            members: 1,
+            members: [] as Member[],
         });
     };
 
@@ -112,9 +199,12 @@ export const Projects = () => {
     const handleAddProject = () => {
         const newProject: Project = {
             id: Math.max(...projects.map((p) => p.id), 0) + 1,
-            ...formData,
-            status: formData.status as StatusType,
-            priority: formData.priority as PriorityType,
+            name: formData.name,
+            status: formData.status,
+            priority: formData.priority,
+            progress: formData.progress,
+            dueDate: formData.dueDate,
+            members: formData.members,
         };
         setProjects([...projects, newProject]);
         setIsAddDialogOpen(false);
@@ -146,9 +236,12 @@ export const Projects = () => {
                     p.id === selectedProject.id
                         ? {
                             ...selectedProject,
-                            ...formData,
-                            status: formData.status as StatusType,
-                            priority: formData.priority as PriorityType,
+                            name: formData.name,
+                            status: formData.status,
+                            priority: formData.priority,
+                            progress: formData.progress,
+                            dueDate: formData.dueDate,
+                            members: formData.members,
                         }
                         : p
                 )
@@ -192,7 +285,7 @@ export const Projects = () => {
                     <Select
 
                         value={formData.status}
-                        onValueChange={(value) => setFormData({ ...formData, status: value })}
+                        onValueChange={(value) => setFormData({ ...formData, status: value as StatusType })}
                     >
                         <SelectTrigger className="w-full">
                             <SelectValue />
@@ -209,7 +302,7 @@ export const Projects = () => {
                     <Label htmlFor="priority">Priority</Label>
                     <Select
                         value={formData.priority}
-                        onValueChange={(value) => setFormData({ ...formData, priority: value })}
+                        onValueChange={(value) => setFormData({ ...formData, priority: value as PriorityType })}
                     >
                         <SelectTrigger className="w-full">
                             <SelectValue />
@@ -244,12 +337,16 @@ export const Projects = () => {
                     <Label htmlFor="members">Team Members</Label>
                     <Input
                         id="members"
-                        type="number"
-                        min="1"
-                        value={formData.members}
-                        onChange={(e) =>
-                            setFormData({ ...formData, members: Number(e.target.value) })
-                        }
+                        type="text"
+                        value={formData.members.map(m => m.name).join(", ")}
+                        onChange={(e) => {
+                            const names = e.target.value.split(",").map(n => n.trim()).filter(n => n);
+                            setFormData({
+                                ...formData,
+                                members: names.map((name, idx) => ({ id: idx + 1, name }))
+                            })
+                        }}
+                        placeholder="Enter names separated by commas"
                     />
                 </div>
             </div>
@@ -310,12 +407,14 @@ export const Projects = () => {
                                 <p className="text-sm text-muted-foreground">Manage and organize your projects</p>
                             </div>
                         </div>
-                        <Button size="sm" className="gap-2  ">
+                        <Button size="sm" className="gap-2  " onClick={() => {
+                            setIsAddDialogOpen(true)
+                        }}>
                             <PackagePlus className="h-4 w-4" />
                             Project
                         </Button>
                     </div>
-                    <CommonTable
+                    <CommonTable<Project>
                         selectable
                         rowKey="id"
                         onRowClick={(row) => {
@@ -342,7 +441,7 @@ export const Projects = () => {
                             {
                                 key: "progress",
                                 header: "Progress",
-                                accessor: (row) => `${row.progress}%`,
+                                accessor: (row) => <CircularProgress value={row.progress} size="xs" />,
                             }, {
                                 key: "dueDate",
                                 header: "Due Date",
@@ -350,7 +449,7 @@ export const Projects = () => {
                             }, {
                                 key: "members",
                                 header: "Members",
-                                accessor: (row) => row.members,
+                                accessor: (row) => <AvatarGroup members={row.members} max={3} size="sm" />
                             },
                         ]}
                         actions={[
@@ -358,6 +457,7 @@ export const Projects = () => {
                                 label: "Edit",
                                 onClick: (row) => handleEditClick(row as Project),
                                 icon: <Edit className="h-4 w-4" />,
+
                             },
                             {
                                 label: "Delete",

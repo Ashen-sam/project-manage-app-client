@@ -85,14 +85,13 @@ export function CommonTable<T extends Record<string, unknown>>({
                 />
             )}
 
-            <div className="w-full overflow-hidden  border  rounded-md">
-                <Table className="  w-full  ">
-                    <TableHeader className=" text-slate-500 text-xs ">
-                        <TableRow className="" >
+            <div className="w-full overflow-hidden border rounded-md">
+                <Table className="w-full ">
+                    <TableHeader className="text-slate-500 text-xs">
+                        <TableRow>
                             {selectable && (
-                                <TableCell className="w-12 ">
+                                <TableCell className="w-12">
                                     <Checkbox
-
                                         checked={isAllSelected}
                                         onCheckedChange={handleSelectAll}
                                         aria-label="Select all"
@@ -108,7 +107,7 @@ export function CommonTable<T extends Record<string, unknown>>({
                             />
                         </TableRow>
                     </TableHeader>
-                    <TableBody className="text-xs ">
+                    <TableBody className="text-xs">
                         {sortedData.length === 0 ? (
                             <TableRow>
                                 <TableCell
@@ -135,7 +134,6 @@ export function CommonTable<T extends Record<string, unknown>>({
                                             ${isSelected ? "bg-muted/30" : ""}
                                         `}
                                         onClick={(e) => {
-                                            // Don't trigger row click when clicking checkbox or actions
                                             if (
                                                 (e.target as HTMLElement).closest('[role="checkbox"]') ||
                                                 (e.target as HTMLElement).closest('.table-actions')
@@ -158,7 +156,11 @@ export function CommonTable<T extends Record<string, unknown>>({
                                             </TableCell>
                                         )}
                                         {columns.map((column) => (
-                                            <TableCell key={column.key}>
+                                            <TableCell
+                                                key={column.key}
+                                                className="max-w-[230px] truncate"
+                                                title={String(column.accessor(row))}
+                                            >
                                                 {column.accessor(row)}
                                             </TableCell>
                                         ))}

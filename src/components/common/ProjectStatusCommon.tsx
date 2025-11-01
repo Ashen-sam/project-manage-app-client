@@ -79,7 +79,7 @@ export const ProjectStatusCommon: React.FC<StatusBadgeProps> = ({ status, classN
 
     return (
         <span
-            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] font-medium min-w-22 ${config.bgColor} ${config.borderColor} ${config.textColor} ${className}`}
+            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] border shadow-xs font-medium    min-w-22  ${className}`}
         >
             <Icon className={`w-3 h-3 text-xs ${config.iconColor}`} />
             {status}

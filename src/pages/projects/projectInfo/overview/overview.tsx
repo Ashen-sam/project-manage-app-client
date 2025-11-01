@@ -1,16 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/common/avatar";
+import { AvatarGroup } from "@/components/common/avatarCommon";
+import { CircularProgress } from "@/components/common/cicularProgress";
+import { ProjectPriorityCommon, type PriorityType, } from "@/components/common/projectPriorityCommon";
+import { ProjectStatusCommon, type StatusType } from "@/components/common/projectStatusCommon";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Check, Plus, Upload, Users } from "lucide-react";
+import { BookCheck, Calendar, Check, Package, Plus, Upload, Users } from "lucide-react";
 
 export const Overview = () => {
     // Mock data - replace with actual data from your API/state
     const projectData = {
         name: "E-Commerce Platform Redesign",
         description: "Provides a clear overview of a project's purpose, scope, objectives, and key details. It serves as a guide for all stakeholders involved, ensuring alignment and clarity throughout the project lifecycle.",
-        status: "On track!",
+        status: "In progress" as StatusType,
+        priority: "High" as PriorityType,
+        dueDate: "2025-11-15",
         summary: "This project focuses on delivering a streamlined and efficient solution to meet business needs.\n\nCarefully planned to achieve success.",
         owner: {
             name: "Savannah Dune",
@@ -24,12 +29,29 @@ export const Overview = () => {
             role: "Lead Dev",
             initials: "JD"
         },
+        // All project members including owner and assignee
+        projectMembers: [
+            { id: 1, name: "Savannah Dune", image: "/public/WhatsApp Image 2025-11-01 at 09.00.47_4ae373f6.jpg" },
+            { id: 2, name: "Jane Doe", image: "/public/WhatsApp Image 2025-11-01 at 09.11.19_2688ec0c.jpg" },
+            { id: 3, name: "John Doe", image: "" },
+            { id: 4, name: "Sarah Miller", image: "/public/WhatsApp Image 2025-11-01 at 09.10.42_df685104.jpg" },
+            { id: 5, name: "Mike Wilson", image: "" },
+            { id: 6, name: "Emily Chen", image: "/public/WhatsApp Image 2025-11-01 at 09.03.26_a38ca278.jpg" },
+            { id: 7, name: "David Brown", image: "" },
+            { id: 8, name: "Lisa Anderson", image: "/public/WhatsApp Image 2025-11-01 at 08.59.01_457f64bf.jpg" },
+        ],
         recentTasks: [
             {
                 name: "Solutions Pages",
                 assignees: [
-                    { name: "John", avatar: "", initials: "JD" },
-                    { name: "Sarah", avatar: "", initials: "SM" }
+                    { id: 1, name: "John Doe", image: "" },
+                    { id: 2, name: "Sarah Miller", image: "" },
+                    { id: 3, name: "Sarah Miller", image: "" },
+                    { id: 4, name: "Sarah Miller", image: "" },
+                    { id: 5, name: "Sarah Miller", image: "" },
+                    { id: 6, name: "Sarah Miller", image: "" },
+                    { id: 7, name: "Sarah Miller", image: "" },
+                    { id: 8, name: "Sarah Miller", image: "" },
                 ],
                 dueDate: "March 17 - 09:00AM"
             },
@@ -83,72 +105,98 @@ export const Overview = () => {
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Left Column - Project Info */}
                 <div className="lg:col-span-2 space-y-6">
-                    {/* Project Descriptions */}
-                    <Card className="shadow-none rounded-sm py-2">
-                        <CardHeader className="pb-0">
-                            <CardTitle className="text-base font-semibold">Project Descriptions</CardTitle>
-                        </CardHeader>
-                        <CardContent >
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                {projectData.description}
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    {/* Assignee */}
+                    {/* Project Details */}
+                    {/* Project Details */}
                     <Card className="shadow-none rounded-sm">
-                        <CardHeader>
-                            <CardTitle className="text-base font-semibold">Assignee</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarImage src={projectData.owner.avatar} />
-                                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                                            {projectData.owner.initials}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="text-sm font-medium">{projectData.owner.name}</p>
-                                        <p className="text-xs text-muted-foreground">{projectData.owner.role}</p>
-                                    </div>
-                                </div>
 
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarImage src={projectData.assignee.avatar} />
-                                        <AvatarFallback className="bg-secondary text-secondary-foreground text-sm">
-                                            {projectData.assignee.initials}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="text-sm font-medium">{projectData.assignee.name}</p>
-                                        <p className="text-xs text-muted-foreground">{projectData.assignee.role}</p>
+                        <CardContent className="space-y-5">
+                            {/* Project Name */}
+                            <div>
+                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 block">
+                                    Project Name
+                                </label>
+                                <div className='flex items-center gap-2'>
+                                    <h3 className="text-lg font-bold text-gray-700 dark:text-foreground">{projectData.name}</h3>
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
+                                        <Package className="h-5 w-5 text-primary" />
                                     </div>
                                 </div>
                             </div>
+
+                            <Separator />
+
+                            {/* Status, Priority, Due Date Grid */}
+                            <div className="flex items-center gap-6">
+                                <div>
+                                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2.5 block">
+                                        Status
+                                    </label>
+                                    <ProjectStatusCommon status={projectData.status} />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2.5 block">
+                                        Priority
+                                    </label>
+                                    <ProjectPriorityCommon priority={projectData.priority} />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2.5 block">
+                                        Due Date
+                                    </label>
+                                    <div className="flex items-center gap-2 text-xs font-medium bg-muted/50 px-3 py-1 rounded-sm border shadow-xs">
+                                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                                        <span>{projectData.dueDate}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2.5 block">
+                                        tasks
+                                    </label>
+                                    <div className="flex items-center gap-2 text-xs font-medium  px-3 py-1 rounded-sm border shadow-xs">
+                                        <span>42</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <Separator />
+
+                            {/* Description */}
+                            <div>
+                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 block">
+                                    Description
+                                </label>
+                                <p className="text-sm text-foreground/80 leading-relaxed">
+                                    {projectData.description}
+                                </p>
+                            </div>
                         </CardContent>
                     </Card>
-
-
+                    {/* Project Members */}
+                    <Card className="shadow-none rounded-sm">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold">Project Members</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <AvatarGroup members={projectData.projectMembers} />
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Right Column - Summary & Activity */}
                 <div className="space-y-6">
                     {/* Summary */}
-                    <Card className="shadow-none">
+                    <Card className="shadow-none rounded-sm">
                         <CardHeader className="pb-3">
                             <div className="flex items-center justify-between">
                                 <CardTitle className="text-base font-semibold">Summary</CardTitle>
                             </div>
                             <div className="pt-2">
-                                <Progress value={100} className="h-1" />
+                                <CircularProgress value={65} size="sm" showLabel={false} />
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                <h4 className="font-semibold text-sm mb-2">{projectData.status}</h4>
+                                <h4 className="font-semibold text-sm mb-2">On track!</h4>
                                 <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
                                     {projectData.summary}
                                 </p>
@@ -157,12 +205,11 @@ export const Overview = () => {
                             <Separator />
 
                             <div className="flex items-center gap-3">
-                                <Avatar className="h-10 w-10">
-                                    <AvatarImage src={projectData.owner.avatar} />
-                                    <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                                        {projectData.owner.initials}
-                                    </AvatarFallback>
-                                </Avatar>
+                                <UserAvatar
+                                    name={projectData.owner.name}
+                                    image={projectData.owner.avatar}
+                                    size="md"
+                                />
                                 <div>
                                     <p className="text-sm font-medium">{projectData.owner.name}</p>
                                     <p className="text-xs text-muted-foreground">{projectData.owner.role}</p>
@@ -172,7 +219,7 @@ export const Overview = () => {
                     </Card>
 
                     {/* Recent Activity */}
-                    <Card className="shadow-none">
+                    <Card className="shadow-none rounded-sm">
                         <CardHeader>
                             <CardTitle className="text-base font-semibold">Recent Activity</CardTitle>
                         </CardHeader>

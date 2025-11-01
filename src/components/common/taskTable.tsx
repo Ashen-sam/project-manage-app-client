@@ -1,21 +1,6 @@
-// TaskTable.tsx
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+"use client";
+
+import * as React from "react";
 import {
     Table,
     TableBody,
@@ -23,381 +8,232 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Check, Plus, Trash2, X } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import type { Task, TaskPriority, TaskStatus, TaskTableProps } from './taskTypes';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus, Trash } from "lucide-react";
+import { ProjectStatusCommon, type StatusType } from "./ProjectStatusCommon";
+import { ProjectPriorityCommon, type PriorityType } from "./projectPriorityCommon";
+
+export interface Task {
+    id: number;
+    name: string;
+    assignee?: string;
+    status?: StatusType;
+    dueDate?: string;
+    priority?: PriorityType;
+}
+
+interface TaskTableProps {
+    title?: string;
+    initialTasks?: Task[];
+    onChange?: (tasks: Task[]) => void;
+    showNumbering?: boolean;
+    columns?: {
+        name?: boolean;
+        assignee?: boolean;
+        status?: boolean;
+        dueDate?: boolean;
+        priority?: boolean;
+    };
+    statusOptions?: string[];
+    priorityOptions?: { value: string; label: string; emoji?: string }[];
+}
 
 export const TaskTable: React.FC<TaskTableProps> = ({
-    tasks,
-    onUpdate,
-    onDelete,
-    onAdd,
+    title,
+    initialTasks = [],
+    onChange,
+    showNumbering = true,
+    columns = {
+        name: true,
+        assignee: true,
+        status: true,
+        dueDate: true,
+        priority: true,
+    },
+
+
 }) => {
-    const [editingCell, setEditingCell] = useState<{ taskId: number; field: string } | null>(null);
-    const [editValue, setEditValue] = useState<string>('');
-    const [isAddingTask, setIsAddingTask] = useState(false);
-    const [newTask, setNewTask] = useState({
-        title: '',
-        description: '',
-        status: 'Todo' as TaskStatus,
-        priority: 'Medium' as TaskPriority,
-        assignee: '',
-        dueDate: '',
-        projectName: '',
-    });
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [tasks, setTasks] = React.useState<Task[]>(initialTasks);
+    const newTaskRef = React.useRef<HTMLInputElement | null>(null);
 
-    useEffect(() => {
-        if (editingCell && inputRef.current) {
-            inputRef.current.focus();
-            inputRef.current.select();
-        }
-    }, [editingCell]);
-
-    const handleCellClick = (taskId: number, field: string, currentValue: string) => {
-        setEditingCell({ taskId, field });
-        setEditValue(currentValue);
-    };
-
-    const handleCellBlur = (task: Task, field: string) => {
-        if (editValue !== task[field as keyof Task]) {
-            onUpdate?.({ ...task, [field]: editValue });
-        }
-        setEditingCell(null);
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent, task: Task, field: string) => {
-        if (e.key === 'Enter') {
-            handleCellBlur(task, field);
-        } else if (e.key === 'Escape') {
-            setEditingCell(null);
-        }
-    };
-
-    const handleStatusChange = (task: Task, newStatus: TaskStatus) => {
-        onUpdate?.({ ...task, status: newStatus });
-    };
-
-    const handlePriorityChange = (task: Task, newPriority: TaskPriority) => {
-        onUpdate?.({ ...task, priority: newPriority });
-    };
+    React.useEffect(() => {
+        setTasks(initialTasks);
+    }, [initialTasks]);
 
     const handleAddTask = () => {
-        if (newTask.title.trim()) {
-            onAdd?.(newTask);
-            setNewTask({
-                title: '',
-                description: '',
-                status: 'Todo',
-                priority: 'Medium',
-                assignee: '',
-                dueDate: '',
-                projectName: '',
-            });
-            setIsAddingTask(false);
-        }
+        const newTask: Task = {
+            id: 1,
+            name: "",
+            assignee: "",
+            status: "Expired",
+            dueDate: "",
+            priority: 'High',
+        };
+        const updated = [...tasks, newTask];
+        setTasks(updated);
+        onChange?.(updated);
+
+        setTimeout(() => {
+            newTaskRef.current?.focus();
+        }, 50);
     };
 
-    const handleCancelAdd = () => {
-        setNewTask({
-            title: '',
-            description: '',
-            status: 'Todo',
-            priority: 'Medium',
-            assignee: '',
-            dueDate: '',
-            projectName: '',
-        });
-        setIsAddingTask(false);
+    const handleDeleteTask = (id: number) => {
+        const updated = tasks.filter((task) => task.id !== id);
+        setTasks(updated);
+        onChange?.(updated);
     };
 
-
-
-    const renderEditableCell = (task: Task, field: keyof Task) => {
-        const isEditing = editingCell?.taskId === task.id && editingCell?.field === field;
-        const value = task[field] as string;
-
-        if (isEditing) {
-            return (
-                <Input
-                    ref={inputRef}
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onBlur={() => handleCellBlur(task, field)}
-                    onKeyDown={(e) => handleKeyDown(e, task, field)}
-                    className="h-8 px-2"
-                />
-            );
-        }
-
-        return (
-            <div
-                onClick={() => handleCellClick(task.id, field, value)}
-                className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded min-h-8 flex items-center"
-            >
-                {value || <span className="text-gray-400">Click to edit</span>}
-            </div>
+    const handleEditTask = (id: number, key: keyof Task, value: string) => {
+        const updated = tasks.map((task) =>
+            task.id === id ? { ...task, [key]: value } : task
         );
+        setTasks(updated);
+        onChange?.(updated);
     };
+
+
+    const columnCount =
+        (showNumbering ? 1 : 0) +
+        (columns.name ? 1 : 0) +
+        (columns.assignee ? 1 : 0) +
+        (columns.status ? 1 : 0) +
+        (columns.dueDate ? 1 : 0) +
+        (columns.priority ? 1 : 0) +
+        1; // +1 for actions column
 
     return (
-        <div className="w-full border rounded-sm overflow-hidden  ">
-            <Table className="">
-                <TableHeader className='' >
-                    <TableRow className="bg-gray-50 hover:bg-gray-50 border-b-2">
-                        <TableHead className="w-12">
-                            <Checkbox
-                                className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
-                            />
-                        </TableHead>
-                        <TableHead className="font-semibold">Task</TableHead>
-                        <TableHead className="font-semibold">Update</TableHead>
-                        <TableHead className="font-semibold w-32">Owner</TableHead>
-                        <TableHead className="font-semibold w-40">Status</TableHead>
-                        <TableHead className="font-semibold w-32">Priority</TableHead>
-                        <TableHead className="font-semibold w-32">Due date</TableHead>
-                        <TableHead className="w-12">
+        <div className="w-full mx-auto bg-white">
+            {title && (
+                <div className="mb-4">
+                    <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+                </div>
+            )}
+            <div className="border rounded-sm overflow-hidden">
+                <Table className="   border border-border rounded-md overflow-hidden
+    [&>thead>tr>th]:border [&>thead>tr>th]:border-border
+    [&>tbody>tr>td]:border [&>tbody>tr>td]:border-border">
+                    <TableHeader>
+                        <TableRow className="bg-gray-50">
+                            {showNumbering && <TableHead className="w-10"></TableHead>}
+                            {columns.name && (
+                                <TableHead className="w-[35%]">Name</TableHead>
+                            )}
+                            {columns.assignee && (
+                                <TableHead className="w-[20%]">Assignee</TableHead>
+                            )}
+                            {columns.status && (
+                                <TableHead className="w-[15%]">Status</TableHead>
+                            )}
+                            {columns.dueDate && (
+                                <TableHead className="w-[12%]">Due date</TableHead>
+                            )}
+                            {columns.priority && (
+                                <TableHead className="w-[10%]">Priority</TableHead>
+                            )}
+                            <TableHead className="w-[60px] text-right">Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
 
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody className='' >
-                    {tasks.map((task) => {
+                    <TableBody>
+                        {tasks.map((task, index) => (
+                            <TableRow key={task.id} className="hover:bg-gray-50">
+                                {showNumbering && (
+                                    <TableCell className="text-center text-gray-400">
+                                        {index + 1}
+                                    </TableCell>
+                                )}
+                                {columns.name && (
+                                    <TableCell>
+                                        <Input
+                                            ref={
+                                                index === tasks.length - 1
+                                                    ? newTaskRef
+                                                    : undefined
+                                            }
+                                            value={task.name}
+                                            placeholder="Enter task name..."
+                                            onChange={(e) =>
+                                                handleEditTask(task.id, "name", e.target.value)
+                                            }
+                                            className="border-0 shadow-none focus-visible:ring-1"
+                                        />
+                                    </TableCell>
+                                )}
+                                {columns.assignee && (
+                                    <TableCell>
 
-                        return (
-                            <TableRow key={task.id} className="hover:bg-gray-50 border-b">
-                                <TableCell>
-                                    <Checkbox
-                                        checked={task.status === 'Done'}
-                                        onCheckedChange={() => {
-                                            handleStatusChange(task, task.status === 'Done' ? 'Todo' : 'Done');
-                                        }}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-2">
-                                        {renderEditableCell(task, 'title')}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-2">
-                                        {renderEditableCell(task, 'title')}
-
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <button className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                <Avatar className="h-6 w-6">
-                                                    <AvatarFallback className="bg-gray-800 text-white text-xs">
-                                                        {task.assignee ? task.assignee.charAt(0).toUpperCase() : '?'}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                            </button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-64 p-2">
-                                            <Input
-                                                value={task.assignee}
-                                                onChange={(e) => onUpdate?.({ ...task, assignee: e.target.value })}
-                                                placeholder="Enter assignee name"
-                                                className="h-8"
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                </TableCell>
-                                <TableCell>
-                                    <Select
-
-                                        value={task.status}
-                                        onValueChange={(value: TaskStatus) => handleStatusChange(task, value)}
-                                    >
-                                        <SelectTrigger
-                                            size='sm'
-                                            className={`h-2 border-0 text-xs p-1`}
-                                        >
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent  >
-                                            <SelectItem value="Todo">Todo</SelectItem>
-                                            <SelectItem value="In Progress">Working on it</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </TableCell>
-                                <TableCell>
-                                    <Select
-                                        value={task.priority}
-                                        onValueChange={(value: TaskPriority) => handlePriorityChange(task, value)}
-                                    >
-                                        <SelectTrigger className="h-2 border-0 text-xs p-1">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Low">Low</SelectItem>
-                                            <SelectItem value="Medium">Medium</SelectItem>
-                                            <SelectItem value="High">High</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </TableCell>
-                                <TableCell>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                className="h-5 border-0 hover:bg-gray-100 cursor-pointer justify-start text-left font-normal px-2"
-                                            >
-                                                <CalendarIcon className="mr-2 h-3 w-3" />
-                                                {task.dueDate ? format(new Date(task.dueDate), "PPP") : <span>Pick a date</span>}
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={task.dueDate ? new Date(task.dueDate) : undefined}
-                                                onSelect={(date) => {
-                                                    onUpdate?.({ ...task, dueDate: date ? format(date, 'yyyy-MM-dd') : '' });
-                                                }}
-                                                initialFocus
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                </TableCell>
-
-                                <TableCell>
+                                        <Input
+                                            value={task.assignee}
+                                            placeholder="Assignee"
+                                            onChange={(e) =>
+                                                handleEditTask(
+                                                    task.id,
+                                                    "assignee",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="border-0 shadow-none focus-visible:ring-1"
+                                        />
+                                    </TableCell>
+                                )}
+                                {columns.status && (
+                                    <TableCell>
+                                        <ProjectStatusCommon status={task.status ?? "Expired"} />
+                                    </TableCell>
+                                )}
+                                {columns.dueDate && (
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={task.dueDate}
+                                            placeholder="Due date"
+                                            onChange={(e) =>
+                                                handleEditTask(
+                                                    task.id,
+                                                    "dueDate",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="border-0 shadow-none focus-visible:ring-1 text-sm"
+                                        />
+                                    </TableCell>
+                                )}
+                                {columns.priority && (
+                                    <TableCell>
+                                        <ProjectPriorityCommon priority={task.priority ?? 'High'} />
+                                    </TableCell>
+                                )}
+                                <TableCell className="text-right">
                                     <Button
                                         variant="ghost"
-                                        size="sm"
-                                        className="h-8 w-8"
-                                        onClick={() => onDelete?.(task.id)}
+                                        size="icon"
+                                        onClick={() => handleDeleteTask(task.id)}
+                                        className="h-8 w-8 text-gray-400 hover:text-red-600"
                                     >
-                                        <Trash2 className="text-xs text-red-500 " />
+                                        <Trash className="h-4 w-4" />
                                     </Button>
                                 </TableCell>
                             </TableRow>
-                        );
-                    })}
+                        ))}
 
-                    {isAddingTask && (
-                        <TableRow className="bg-blue-50 border-b-2 border-blue-200">
-                            <TableCell>
-                                <Checkbox disabled />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    value={newTask.title}
-                                    onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                                    placeholder="Task title"
-                                    className="h-8"
-                                    autoFocus
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') handleAddTask();
-                                        if (e.key === 'Escape') handleCancelAdd();
-                                    }}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    value={newTask.assignee}
-                                    onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
-                                    placeholder="Assignee"
-                                    className="h-8"
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Select
-                                    value={newTask.status}
-                                    onValueChange={(value: TaskStatus) => setNewTask({ ...newTask, status: value })}
-                                >
-                                    <SelectTrigger className="h-8">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Todo">Todo</SelectItem>
-                                        <SelectItem value="In Progress">Working on it</SelectItem>
-                                        <SelectItem value="Done">Done</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </TableCell>
-                            <TableCell>
-                                <Select
-                                    value={newTask.priority}
-                                    onValueChange={(value: TaskPriority) => setNewTask({ ...newTask, priority: value })}
-                                >
-                                    <SelectTrigger className="h-8">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Low">Low</SelectItem>
-                                        <SelectItem value="Medium">Medium</SelectItem>
-                                        <SelectItem value="High">High</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </TableCell>
-                            <TableCell>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            className="h-8 justify-start text-left font-normal"
-                                        >
-                                            <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {newTask.dueDate ? format(new Date(newTask.dueDate), "PPP") : <span>Pick a date</span>}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
-                                        <Calendar
-                                            mode="single"
-                                            selected={newTask.dueDate ? new Date(newTask.dueDate) : undefined}
-                                            onSelect={(date) => {
-                                                setNewTask({ ...newTask, dueDate: date ? format(date, 'yyyy-MM-dd') : '' });
-                                            }}
-                                            initialFocus
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                            </TableCell>
-
-                            <TableCell>
-                                <div className="flex gap-1">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        onClick={handleAddTask}
-                                    >
-                                        <Check className="h-4 w-4 text-green-600" />
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        onClick={handleCancelAdd}
-                                    >
-                                        <X className="h-4 w-4 text-red-600" />
-                                    </Button>
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    )}
-
-                    {!isAddingTask && (
-                        <TableRow className="hover:bg-gray-50 border-0">
-                            <TableCell colSpan={8} className="py-2">
+                        {/* Add New Row Button */}
+                        <TableRow className="hover:bg-gray-50">
+                            <TableCell colSpan={columnCount} className="p-0">
                                 <Button
-                                    variant="outline"
-                                    onClick={() => setIsAddingTask(true)}
-                                    className="text-gray-500 hover:text-gray-700 gap-2 w-full justify-start h-8"
+                                    onClick={handleAddTask}
+                                    variant="ghost"
+                                    className="w-full justify-start text-gray-400 hover:text-gray-600 rounded-none h-12"
                                 >
-                                    <Plus className="h-4 w-4" />
-                                    Add task
+                                    <Plus className="h-4 w-4 mr-2" /> Add task
                                 </Button>
                             </TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     );
 };

@@ -54,6 +54,18 @@ export const ModeToggle = () => {
                         Blue {themeColor === "blue" && "✓"}
                     </span>
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setThemeColor("orange")}>
+                    <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 rounded-full bg-orange-500"></span>
+                        orange {themeColor === "orange" && "✓"}
+                    </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setThemeColor("green")}>
+                    <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 rounded-full bg-green-500"></span>
+                        green {themeColor === "green" && "✓"}
+                    </span>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

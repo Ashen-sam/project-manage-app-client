@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 
 type Theme = "dark" | "light" | "system"
-type ThemeColor = "default" | "purple" | "blue"
+type ThemeColor = "default" | "purple" | "blue" | "orange" | "green"
 
 type ThemeProviderProps = {
     children: React.ReactNode
@@ -66,7 +66,7 @@ export function ThemeProvider({
 
     useEffect(() => {
         const root = window.document.documentElement
-        root.classList.remove("theme-default", "theme-purple", "theme-blue")
+        root.classList.remove("theme-default", "theme-purple", "theme-blue", "theme-orange", "theme-green")
         root.classList.add(`theme-${themeColor}`)
     }, [themeColor])
 

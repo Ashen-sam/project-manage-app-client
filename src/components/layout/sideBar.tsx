@@ -44,7 +44,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     return (
         <div
             className={cn(
-                "flex flex-col border-r transition-all duration-300 ease-in-out relative",
+                "flex flex-col border-r transition-all duration-300 ease-in-out bg-[#fcfcfc] dark:bg-[#191919] relative",
                 isCollapsed ? "w-[60px]" : "w-[200px]",
                 className
             )}
@@ -68,13 +68,13 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 "flex items-center gap-2 px-3 py-3 border-b transition-all duration-300",
                 isCollapsed && "justify-center px-2"
             )}>
-                <div className="flex items-center justify-center w-6 h-6 rounded bg-amber-500 text-white text-xs font-semibold flex-shrink-0">
+                <div className="flex items-center justify-center w-6 h-6 rounded bg-amber-500 text-white text-xs font-semibold shrink-0">
                     AS
                 </div>
                 {!isCollapsed && (
                     <>
                         <span className="text-sm font-medium flex-1 truncate">ashen sam</span>
-                        <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
                     </>
                 )}
             </div>
@@ -96,15 +96,15 @@ export const Sidebar = ({ className }: SidebarProps) => {
                                 variant="ghost"
                                 size="sm"
                                 className={cn(
-                                    "w-full gap-2 h-8 px-2 text-sm font-normal transition-all duration-300",
+                                    "w-full gap-2 h-8 px-2 text-[13px]  transition-all  font-medium  duration-300",
                                     isCollapsed ? "justify-center px-0" : "justify-start",
                                     isActive(item.to)
                                         ? "bg-primary/10 text-primary hover:bg-primary/20"
-                                        : "hover:bg-primary/5 hover:text-primary"
+                                        : "hover:bg-primary/5 "
                                 )}
                                 title={isCollapsed ? item.label : undefined}
                             >
-                                <item.icon className="h-4 w-4 flex-shrink-0" />
+                                <item.icon className="h-4 w-4 shrink-0" />
                                 {!isCollapsed && <span className="truncate">{item.label}</span>}
                             </Button>
                         </Link>
@@ -117,7 +117,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 <div className="px-2 py-2">
                     {!isCollapsed && (
                         <div className="flex items-center gap-1 px-2 py-1">
-                            <span className="text-xs font-semibold text-muted-foreground">Work Space</span>
+                            <span className="text-xs font-semibold  text-primary">Work Space</span>
                         </div>
                     )}
                     <div className="mt-1 space-y-0.5">
@@ -127,15 +127,15 @@ export const Sidebar = ({ className }: SidebarProps) => {
                                     variant="ghost"
                                     size="sm"
                                     className={cn(
-                                        "w-full gap-2 h-8 px-2 text-sm font-normal transition-all duration-300",
+                                        "w-full gap-2 h-8 px-2 text-[13px]  transition-all duration-300 font-medium ",
                                         isCollapsed ? "justify-center px-0" : "justify-start",
                                         isActive(item.to)
                                             ? "bg-primary/10 text-primary hover:bg-primary/20"
-                                            : "hover:bg-primary/5 hover:text-primary"
+                                            : "hover:bg-primary/5 "
                                     )}
                                     title={isCollapsed ? item.label : undefined}
                                 >
-                                    <item.icon className="h-4 w-4 flex-shrink-0" />
+                                    <item.icon className="h-4 w-4 shrink-0" />
                                     {!isCollapsed && <span className="truncate">{item.label}</span>}
                                 </Button>
                             </Link>
@@ -157,7 +157,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         )}
                         title={isCollapsed ? "Settings" : undefined}
                     >
-                        <Settings className="h-4 w-4 flex-shrink-0" />
+                        <Settings className="h-4 w-4 shrink-0" />
                         {!isCollapsed && <span className="truncate">Settings</span>}
                     </Button>
                 </div>

@@ -1,5 +1,5 @@
 import { GlobalLayout } from "@/components";
-import { Calendar as CalendarNew, Home, Overview, ProjectInfo, Projects, Settings, Task } from "@/pages";
+import { Calendar as CalendarNew, Home, Overview, ProjectFlow, ProjectInfo, Projects, Settings, Task } from "@/pages";
 import { AuthLayout, Login, Register } from "@/pages/auth";
 import { CalendarPage } from "@/pages/calendar/calendar";
 import { createBrowserRouter } from "react-router-dom";
@@ -12,6 +12,8 @@ export const router = createBrowserRouter([
             { path: "/projects", element: <Projects /> },
             { path: "/calendar", element: <CalendarPage /> },
             { path: "/settings", element: <Settings /> },
+            { path: "/project-flow", element: <ProjectFlow /> },
+
 
 
             {

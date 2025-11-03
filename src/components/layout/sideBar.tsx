@@ -8,6 +8,7 @@ import {
     ChevronDown,
     ChevronLeft,
     ChevronRight,
+    FolderArchive,
     Inbox,
     ListTodo,
     Package,
@@ -28,7 +29,8 @@ const workspaceItems = [
     { to: "/projects", icon: Package, label: "Projects" },
     { to: "/calendar", icon: Calendar, label: "Calendar" },
     { to: "/todo", icon: ListTodo, label: "Todo" },
-    { to: "/goals", icon: Target, label: "Goals" }
+    { to: "/goals", icon: Target, label: "Goals" },
+    { to: '/project-flow', icon: FolderArchive, label: 'Flow' }
 ];
 
 export const Sidebar = ({ className }: SidebarProps) => {

@@ -13,7 +13,8 @@ export function CommonDialogFooter({
     showConfirm = true,
 }: DialogFooterProps) {
     return (
-        <div className="flex justify-end gap-3">
+
+        <div className="flex justify-end gap-3 py-1">
             {showCancel && (
                 <Button
                     className="text-xs"

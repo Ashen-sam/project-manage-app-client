@@ -29,4 +29,5 @@ export interface DialogFooterProps {
   isLoading?: boolean;
   showCancel?: boolean;
   showConfirm?: boolean;
+  info?: string;
 }

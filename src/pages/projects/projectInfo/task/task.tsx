@@ -9,10 +9,7 @@ export const Task = () => {
 
     const handleTasksChange = (updatedTasks: TaskType[]) => {
         setTasks(updatedTasks);
-        // You can add additional logic here:
-        // - Save to backend API
-        // - Update local storage
-        // - Show success notification
+
         console.log("Tasks updated:", updatedTasks);
     };
 

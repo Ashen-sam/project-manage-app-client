@@ -765,15 +765,13 @@
 //     );
 // }
 
-import { useState } from 'react';
-import { PackagePlus, Calendar, Users, Clock, MoreVertical, Edit, Trash2, FolderArchive } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Card,
-    CardContent,
     CardDescription,
     CardHeader,
-    CardTitle,
+    CardTitle
 } from '@/components/ui/card';
 import {
     DropdownMenu,
@@ -781,7 +779,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
+import { Edit, FolderArchive, MoreVertical, PackagePlus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface Project {
     id: string;

@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Outlet, useNavigate, useParams, useLocation } from "react-router-dom";
-import { LayoutDashboard, CheckSquare, Calendar } from "lucide-react";
+import { Calendar, CheckSquare, LayoutDashboard } from "lucide-react";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const ProjectInfo = () => {
     const navigate = useNavigate();

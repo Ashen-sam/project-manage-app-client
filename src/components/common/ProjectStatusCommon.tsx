@@ -13,9 +13,10 @@ export type StatusType =
 interface StatusBadgeProps {
     status: StatusType;
     className?: string;
+    width?: string
 }
 
-export const ProjectStatusCommon: React.FC<StatusBadgeProps> = ({ status, className = '' }) => {
+export const ProjectStatusCommon: React.FC<StatusBadgeProps> = ({ status, className = '', width = 'min-w-22' }) => {
     const statusConfig = {
         'In progress': {
             bgColor: 'bg-blue-100',
@@ -79,7 +80,7 @@ export const ProjectStatusCommon: React.FC<StatusBadgeProps> = ({ status, classN
 
     return (
         <span
-            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] border shadow-xs font-medium    min-w-22  ${className}`}
+            className={`inline-flex items-center gap-1.5 px-2 rounded-sm py-1 text-[11px] border shadow-xs font-medium    ${width}  ${className}`}
         >
             <Icon className={`w-3 h-3 text-xs ${config.iconColor}`} />
             {status}
